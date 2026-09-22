@@ -3,7 +3,9 @@ import express from "express";
 
 const app = express();
 
-PORT = 3000;
+const PORT = 8000;
+
+app.use(express.static('public'));
 
 
 app.listen(PORT, () =>{
