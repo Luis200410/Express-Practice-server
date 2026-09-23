@@ -26,9 +26,9 @@ app.use(express.static('public'));
 
 
 
-app.use('/api/heroes', getHeroesRouter)
+app.use('/api', getHeroesRouter)
 app.use('/api/auth', authRouter)
-app.use('/api/auth/me')
+app.use('/api/auth', getUserNameRouter)
 
 
 app.listen(PORT, () =>{

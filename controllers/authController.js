@@ -17,7 +17,7 @@ export async function registerUser(req, res){
 
         const looking  = await db.get('SELECT * FROM users WHERE  name = ? AND username = ?', [name, username])
 
-        if(existingUser){
+        if(looking){
         return res.status(400).json({error: 'The user already exists, Try Again'})
         }
 
@@ -40,30 +40,34 @@ export async function loginUser(req, res){
 
     let {username, password} = req.body
 
+    username = username.trim()
+
     if (!username || !password){
         return res.status(400).json({error: "All fields are required"})
     }
-    
-    username = username.trim()
 
     try{
         const db = await getDBConnection()
 
-        const existingUser = await db.get('SELECT * FROM users WHERE  name = ? AND username = ?', [name, username])
+        const matchUser = await db.get('SELECT * FROM users WHERE username = ?', [username])
 
-        if(existingUser){
-        return res.status(400).json({error: 'The user already exists, Try Again'})
+        if(!matchUser){
+        return res.status(401).json({error: 'Invalid Credentials'})
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10)
+        const matchPassword = await bcrypt.compare(password, matchUser.password)
 
-        const insertUser = await db.run('INSERT INTO users (name, username, password) VALUES (?, ?, ?)', [name, username, hashedPassword])
+        if(!matchPassword){
+        return res.status(401).json({error: 'Invalid Credentials'})
+        }
 
-        res.status(201).json({message: 'User successfully register'})
+        req.session.userId = matchUser.id
+
+        res.status(201).json({message: 'Logged in'})
 
     }catch(err){
-        console.log('Something went wrong with the registration: ', err.message)
-        res.status(500).json({err: 'Something went wrong with the registration'})
+        console.log('Login error', err.message)
+        res.status(500).json({err: 'Login failed. PLease try again'})
 
     }
 

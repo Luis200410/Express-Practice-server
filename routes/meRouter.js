@@ -1,6 +1,6 @@
 import express from 'express'
-import { getCurrentUser } from '../controllers/getHeroesController.js'
+import { getCurrentUser } from '../controllers/meController.js'
 
 export const getUserNameRouter = express.Router()
 
-getUserNameRouter.get('/', getCurrentUser)
+getUserNameRouter.get('/me', getCurrentUser)
