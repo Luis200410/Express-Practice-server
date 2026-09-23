@@ -1,18 +1,34 @@
 import express from "express";
 import { getHeroesRouter } from "./routes/heroesRouter.js";
 import { authRouter } from "./routes/authRouter.js";
+import { getUserNameRouter } from "./routes/meRouter.js";
+import session from 'express-session'
+import dotenv from 'dotenv'
 
-
+dotenv.config()
 const app = express();
-
 const PORT = 8000;
+const secret = process.env.SESSION_SECRET
+
+app.use(express.json())
+app.use(session({
+    secret: secret,
+    resave: false,
+    saveUninitialized: false,
+    cookie : {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax'
+    }
+}))
 
 app.use(express.static('public'));
 
-app.use(express.json())
+
 
 app.use('/api/heroes', getHeroesRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/auth/me')
 
 
 app.listen(PORT, () =>{
