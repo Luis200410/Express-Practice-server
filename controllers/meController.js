@@ -4,6 +4,8 @@ export async function getCurrentUser(req, res){
 
     const db = await getDBConnection()
 
-    if(!req.session.userId)
+    if(!req.session.userId){
+        
+    }
 
 }
