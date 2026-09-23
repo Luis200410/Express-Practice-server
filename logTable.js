@@ -9,14 +9,14 @@ async function viewAllProducts() {
   });
 
   try { 
-    const products = await db.all('SELECT * FROM heroes')
+    const users = await db.all('SELECT * FROM users')
     // Neater table display
-    const displayItems = products.map(({ id, name, attackPower, defensePower, maxHp, imageUrl }) => {
-      return { id, name, attackPower, defensePower, maxHp, imageUrl }
+    const displayItems = users.map(({ id, name, username, password}) => {
+      return { id, name, username, password}
     })
     console.table(displayItems)
   } catch (err) {
-    console.error('Error fetching products:', err.message)
+    console.error('Error fetching users:', err.message)
   } finally {
     await db.close()
   }
