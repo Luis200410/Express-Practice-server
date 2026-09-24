@@ -4,6 +4,7 @@ import { authRouter } from "./routes/authRouter.js";
 import { getUserNameRouter } from "./routes/meRouter.js";
 import session from 'express-session'
 import dotenv from 'dotenv'
+import {gameRouter} from "./routes/gameRouter.js"
 
 dotenv.config()
 const app = express();
@@ -29,6 +30,8 @@ app.use(express.static('public'));
 app.use('/api', getHeroesRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/auth', getUserNameRouter)
+app.use('/api/battle', gameRouter)
+
 
 
 app.listen(PORT, () =>{
