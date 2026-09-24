@@ -10,28 +10,30 @@ export function createDiceGameEngine(heroes) {
   let playerHp = 0;
   let computerHp = 0;
 
-  const getHeroes = () => {
-    return heroes;
+  const getHeroes = async () => {
+    return await heroes();
   };
 
-  const getHeroById = (heroId) => {
+  const getHeroById = async (heroId) => {
     const id = Number(heroId);
-    return heroes.find((hero) => hero.id === id) || null;
+    const list = await heroes()
+    return list.find((hero) => hero.id === id) || null;
   };
 
-  const chooseComputerHero = (playerHeroId) => {
-    const pool = heroes.filter((hero) => hero.id !== Number(playerHeroId));
+  const chooseComputerHero = async(playerHeroId) => {
+    const list = await heroes()
+    const pool = list.filter((hero) => hero.id !== Number(playerHeroId));
     if (pool.length === 0) return null;
     return pool[Math.floor(Math.random() * pool.length)];
   };
 
-  const startBattle = (playerHeroId) => {
-    playerHero = getHeroById(playerHeroId);
+  const startBattle = async (playerHeroId) => {
+    playerHero = await getHeroById(playerHeroId);
     if (!playerHero) {
       return { error: 'Hero not found.' };
     }
 
-    computerHero = chooseComputerHero(playerHero.id);
+    computerHero = await chooseComputerHero(playerHero.id);
     if (!computerHero) {
       return { error: 'No available opponent.' };
     }
@@ -39,7 +41,7 @@ export function createDiceGameEngine(heroes) {
     playerHp = playerHero.maxHp;
     computerHp = computerHero.maxHp;
 
-    return { playerHero, computerHero, playerHp, computerHp };
+    return await { playerHero, computerHero, playerHp, computerHp };
   };
 
   const playRound = () => {

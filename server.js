@@ -1,5 +1,4 @@
 import express from "express";
-import { getHeroesRouter } from "./routes/heroesRouter.js";
 import { authRouter } from "./routes/authRouter.js";
 import { getUserNameRouter } from "./routes/meRouter.js";
 import session from 'express-session'
@@ -27,10 +26,9 @@ app.use(express.static('public'));
 
 
 
-app.use('/api', getHeroesRouter)
+app.use('/', gameRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/auth', getUserNameRouter)
-app.use('/api/battle', gameRouter)
 
 
 

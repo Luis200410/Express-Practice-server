@@ -1,9 +1,12 @@
+
 import express from 'express'
-import { startBattle, startRound, resetBattle} from '../controllers/gameController.js'
+import { getHeroes, startBattle, startRound, resetBattle } from '../controllers/gameController.js'
+
 
 export const gameRouter = express.Router()
 
-gameRouter.get('/start', startBattle)
-gameRouter.get('/round', startRound)
-gameRouter.get('/reset', resetBattle)
+gameRouter.get('/api/heroes', getHeroes)
+gameRouter.post('/api/battle/start', startBattle)
+gameRouter.post('/api/battle/round', startRound)
+gameRouter.post('/api/battle/reset', resetBattle)
 
